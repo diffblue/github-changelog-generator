@@ -102,7 +102,8 @@ function renderIssues(repository, issues)
         }
     } else {
         $.each(issues, function (index, issue) {
-            var description = formatChangelogEntry(issue, repository);
+            var description =
+                formatChangelogEntry(issue, repository, isMainRepository);
             if (isMainRepository) {
                 $('#issues').prepend( description + "\n" );
             } else {
@@ -170,9 +171,10 @@ function encodedStr(rawStr)
     });
 }
 
-function formatChangelogEntry(issue, repository)
+function formatChangelogEntry(issue, repository, is_main_repository)
 {
-    var description = '  * ' + encodedStr(issue.title) + ' (' + repository + '#' + issue.number + ')'
+    var pr_link = (is_main_repository ? "" : repository) + '#' + issue.number
+    var description = '  * ' + encodedStr(issue.title) + ' (' + pr_link + ')'
 
     return description;
 }
