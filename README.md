@@ -23,10 +23,12 @@ For each issue the changelog generator lists:
 
 ## Configuration
 
+### OAuth2 Token
+You'll need to set up an OAuth2 token. This can be found in your Github account under Settings -> Developer Settings -> Personal Access Token. Generate a new token and tick the "Full control of private repositories" box, so that the change log generator can access the required information for test-gen and models-library. Make a note of the token so it can be put in the config.js file later.
+
 ### config.js file
 You can change the configuration in the [src/config.js](src/config.js) file.
 The OAuth2 Token and the name of the repository can be changed directly in the UI as well.
-
 
 ### sample config.js file
 
