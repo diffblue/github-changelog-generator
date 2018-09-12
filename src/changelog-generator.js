@@ -201,7 +201,7 @@ function fetchIssuesSince (repository, issues, isoDate, page)
                     return;
                 }
 
-                if (isPullRequest(issue) && !isPullRequestMerged(issue)) {
+                if (!isPullRequestMerged(issue)) {
                     console.log('Ignoring issue as it was not merged', issue);
                     return;
                 }
