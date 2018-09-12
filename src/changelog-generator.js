@@ -174,7 +174,16 @@ function encodedStr(rawStr)
 function formatChangelogEntry(issue, repository, is_main_repository)
 {
     var pr_link = (is_main_repository ? "" : repository) + '#' + issue.number
-    var description = '  * ' + encodedStr(issue.title) + ' (' + pr_link + ')'
+    var pr_title = encodedStr(issue.title)
+    var jira_regex = /\[(TG-\d+)\](.*)/g;
+    var match = jira_regex.exec(pr_title)
+    if(match) {
+        // if title is of the form [TG-1234] blahhh
+        // change title to link to ticket:
+        // [[TG-1234](https://diffblue.atlassian.net/browse/TG-1234) blahhh
+        pr_title = '[[' + match[1] + ']](' + 'https://diffblue.atlassian.net/browse/' + match[1] + ')' + match[2]
+    }
+    var description = '  * ' + pr_title + ' (' + pr_link + ')'
 
     return description;
 }
@@ -198,6 +207,11 @@ function fetchIssuesSince (repository, issues, isoDate, page)
 
                 if (!issue.closed_at || isDateOlderThan(issue.closed_at, isoDate)) {
                     console.log('ignore this issue because it was updated within your date range, but it was already closed before', issue);
+                    return;
+                }
+
+                if(!isPullRequest(issue)) {
+                    console.log('Ignoring issue as it isn\'t a PR', issue);
                     return;
                 }
 
